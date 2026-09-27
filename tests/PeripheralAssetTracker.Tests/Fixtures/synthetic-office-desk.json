@@ -1,0 +1,281 @@
+{
+  "capturedAt": "2026-09-26T12:00:00-03:00",
+  "description": "SYNTHETIC test data (not captured from real hardware). Instance id formats follow Windows conventions.",
+  "nodes": [
+    {
+      "instanceId": "USB\\ROOT_HUB30\\5&AAAA&0&0",
+      "className": "USB",
+      "enumeratorName": "USB",
+      "description": "USB Root Hub (USB 3.0)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}"
+    },
+
+    {
+      "instanceId": "USB\\VID_046D&PID_C084\\ABC123",
+      "parentInstanceId": "USB\\ROOT_HUB30\\5&AAAA&0&0",
+      "className": "USB",
+      "enumeratorName": "USB",
+      "description": "Dispositivo composto USB",
+      "busReportedDescription": "G203 LIGHTSYNC Gaming Mouse",
+      "manufacturer": "(Controlador de host USB padrão)",
+      "containerId": "{11111111-1111-1111-1111-111111111111}",
+      "hardwareIds": [ "USB\\VID_046D&PID_C084&REV_7200", "USB\\VID_046D&PID_C084" ]
+    },
+    {
+      "instanceId": "USB\\VID_046D&PID_C084&MI_00\\6&G203&0&0000",
+      "parentInstanceId": "USB\\VID_046D&PID_C084\\ABC123",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "description": "Dispositivo de Entrada USB",
+      "containerId": "{11111111-1111-1111-1111-111111111111}"
+    },
+    {
+      "instanceId": "HID\\VID_046D&PID_C084&MI_00\\7&G203A&0&0000",
+      "parentInstanceId": "USB\\VID_046D&PID_C084&MI_00\\6&G203&0&0000",
+      "className": "Mouse",
+      "enumeratorName": "HID",
+      "description": "Mouse compatível com HID",
+      "manufacturer": "Microsoft",
+      "containerId": "{11111111-1111-1111-1111-111111111111}",
+      "hardwareIds": [ "HID\\VID_046D&PID_C084&REV_7200&MI_00", "HID\\VID_046D&PID_C084&MI_00", "HID_DEVICE_SYSTEM_MOUSE", "HID_DEVICE_UP:0001_U:0002", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "USB\\VID_046D&PID_C084&MI_01\\6&G203&0&0001",
+      "parentInstanceId": "USB\\VID_046D&PID_C084\\ABC123",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "description": "Dispositivo de Entrada USB",
+      "containerId": "{11111111-1111-1111-1111-111111111111}"
+    },
+    {
+      "instanceId": "HID\\VID_046D&PID_C084&MI_01&COL01\\7&G203B&0&0000",
+      "parentInstanceId": "USB\\VID_046D&PID_C084&MI_01\\6&G203&0&0001",
+      "className": "Keyboard",
+      "enumeratorName": "HID",
+      "description": "Dispositivo de teclado HID",
+      "containerId": "{11111111-1111-1111-1111-111111111111}",
+      "hardwareIds": [ "HID\\VID_046D&PID_C084&MI_01&COL01", "HID_DEVICE_SYSTEM_KEYBOARD", "HID_DEVICE_UP:0001_U:0006", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "HID\\VID_046D&PID_C084&MI_01&COL02\\7&G203B&0&0001",
+      "parentInstanceId": "USB\\VID_046D&PID_C084&MI_01\\6&G203&0&0001",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "description": "HID-compliant consumer control device",
+      "containerId": "{11111111-1111-1111-1111-111111111111}",
+      "hardwareIds": [ "HID\\VID_046D&PID_C084&MI_01&COL02", "HID_DEVICE_SYSTEM_CONSUMER", "HID_DEVICE_UP:000C_U:0001", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "HID\\VID_046D&PID_C084&MI_01&COL03\\7&G203B&0&0002",
+      "parentInstanceId": "USB\\VID_046D&PID_C084&MI_01\\6&G203&0&0001",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "description": "Dispositivo definido pelo fornecedor compatível com HID",
+      "containerId": "{11111111-1111-1111-1111-111111111111}",
+      "hardwareIds": [ "HID\\VID_046D&PID_C084&MI_01&COL03", "HID_DEVICE_UP:FF00_U:0001", "HID_DEVICE" ]
+    },
+
+    {
+      "instanceId": "USB\\VID_413C&PID_2113\\5&1A2B3C4D&0&2",
+      "parentInstanceId": "USB\\ROOT_HUB30\\5&AAAA&0&0",
+      "className": "USB",
+      "enumeratorName": "USB",
+      "description": "Dispositivo composto USB",
+      "busReportedDescription": "Dell KB216 Wired Keyboard",
+      "containerId": "{22222222-2222-2222-2222-222222222222}",
+      "hardwareIds": [ "USB\\VID_413C&PID_2113&REV_0110", "USB\\VID_413C&PID_2113" ]
+    },
+    {
+      "instanceId": "USB\\VID_413C&PID_2113&MI_00\\6&KB216&0&0000",
+      "parentInstanceId": "USB\\VID_413C&PID_2113\\5&1A2B3C4D&0&2",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "containerId": "{22222222-2222-2222-2222-222222222222}"
+    },
+    {
+      "instanceId": "HID\\VID_413C&PID_2113&MI_00\\7&KB216A&0&0000",
+      "parentInstanceId": "USB\\VID_413C&PID_2113&MI_00\\6&KB216&0&0000",
+      "className": "Keyboard",
+      "enumeratorName": "HID",
+      "description": "Dispositivo de teclado HID",
+      "containerId": "{22222222-2222-2222-2222-222222222222}",
+      "hardwareIds": [ "HID\\VID_413C&PID_2113&MI_00", "HID_DEVICE_SYSTEM_KEYBOARD", "HID_DEVICE_UP:0001_U:0006", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "USB\\VID_413C&PID_2113&MI_01\\6&KB216&0&0001",
+      "parentInstanceId": "USB\\VID_413C&PID_2113\\5&1A2B3C4D&0&2",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "containerId": "{22222222-2222-2222-2222-222222222222}"
+    },
+    {
+      "instanceId": "HID\\VID_413C&PID_2113&MI_01&COL01\\7&KB216B&0&0000",
+      "parentInstanceId": "USB\\VID_413C&PID_2113&MI_01\\6&KB216&0&0001",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "containerId": "{22222222-2222-2222-2222-222222222222}",
+      "hardwareIds": [ "HID\\VID_413C&PID_2113&MI_01&COL01", "HID_DEVICE_UP:000C_U:0001", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "HID\\VID_413C&PID_2113&MI_01&COL02\\7&KB216B&0&0001",
+      "parentInstanceId": "USB\\VID_413C&PID_2113&MI_01\\6&KB216&0&0001",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "containerId": "{22222222-2222-2222-2222-222222222222}",
+      "hardwareIds": [ "HID\\VID_413C&PID_2113&MI_01&COL02", "HID_DEVICE_UP:0001_U:0080", "HID_DEVICE" ]
+    },
+
+    {
+      "instanceId": "USB\\VID_413C&PID_301A\\5&1A2B3C4D&0&3",
+      "parentInstanceId": "USB\\ROOT_HUB30\\5&AAAA&0&0",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "busReportedDescription": "Dell MS116 USB Optical Mouse",
+      "containerId": "{33333333-3333-3333-3333-333333333333}",
+      "hardwareIds": [ "USB\\VID_413C&PID_301A&REV_0100", "USB\\VID_413C&PID_301A" ]
+    },
+    {
+      "instanceId": "HID\\VID_413C&PID_301A\\6&MS116A&0&0000",
+      "parentInstanceId": "USB\\VID_413C&PID_301A\\5&1A2B3C4D&0&3",
+      "className": "Mouse",
+      "enumeratorName": "HID",
+      "description": "Mouse compatível com HID",
+      "containerId": "{33333333-3333-3333-3333-333333333333}",
+      "hardwareIds": [ "HID\\VID_413C&PID_301A", "HID_DEVICE_SYSTEM_MOUSE", "HID_DEVICE_UP:0001_U:0002", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "USB\\VID_413C&PID_301A\\5&1A2B3C4D&0&4",
+      "parentInstanceId": "USB\\ROOT_HUB30\\5&AAAA&0&0",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "busReportedDescription": "Dell MS116 USB Optical Mouse",
+      "containerId": "{44444444-4444-4444-4444-444444444444}",
+      "hardwareIds": [ "USB\\VID_413C&PID_301A&REV_0100", "USB\\VID_413C&PID_301A" ]
+    },
+    {
+      "instanceId": "HID\\VID_413C&PID_301A\\6&MS116B&0&0000",
+      "parentInstanceId": "USB\\VID_413C&PID_301A\\5&1A2B3C4D&0&4",
+      "className": "Mouse",
+      "enumeratorName": "HID",
+      "description": "Mouse compatível com HID",
+      "containerId": "{44444444-4444-4444-4444-444444444444}",
+      "hardwareIds": [ "HID\\VID_413C&PID_301A", "HID_DEVICE_SYSTEM_MOUSE", "HID_DEVICE_UP:0001_U:0002", "HID_DEVICE" ]
+    },
+
+    {
+      "instanceId": "USB\\VID_046D&PID_C52B\\5&1A2B3C4D&0&5",
+      "parentInstanceId": "USB\\ROOT_HUB30\\5&AAAA&0&0",
+      "className": "USB",
+      "enumeratorName": "USB",
+      "busReportedDescription": "USB Receiver",
+      "containerId": "{55555555-5555-5555-5555-555555555555}",
+      "hardwareIds": [ "USB\\VID_046D&PID_C52B&REV_1211", "USB\\VID_046D&PID_C52B" ]
+    },
+    {
+      "instanceId": "USB\\VID_046D&PID_C52B&MI_00\\6&UNIF&0&0000",
+      "parentInstanceId": "USB\\VID_046D&PID_C52B\\5&1A2B3C4D&0&5",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "containerId": "{55555555-5555-5555-5555-555555555555}"
+    },
+    {
+      "instanceId": "HID\\VID_046D&PID_C52B&MI_00\\7&UNIFA&0&0000",
+      "parentInstanceId": "USB\\VID_046D&PID_C52B&MI_00\\6&UNIF&0&0000",
+      "className": "Keyboard",
+      "enumeratorName": "HID",
+      "containerId": "{55555555-5555-5555-5555-555555555555}",
+      "hardwareIds": [ "HID\\VID_046D&PID_C52B&MI_00", "HID_DEVICE_SYSTEM_KEYBOARD", "HID_DEVICE_UP:0001_U:0006", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "USB\\VID_046D&PID_C52B&MI_01\\6&UNIF&0&0001",
+      "parentInstanceId": "USB\\VID_046D&PID_C52B\\5&1A2B3C4D&0&5",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "containerId": "{55555555-5555-5555-5555-555555555555}"
+    },
+    {
+      "instanceId": "HID\\VID_046D&PID_C52B&MI_01&COL01\\7&UNIFB&0&0000",
+      "parentInstanceId": "USB\\VID_046D&PID_C52B&MI_01\\6&UNIF&0&0001",
+      "className": "Mouse",
+      "enumeratorName": "HID",
+      "containerId": "{55555555-5555-5555-5555-555555555555}",
+      "hardwareIds": [ "HID\\VID_046D&PID_C52B&MI_01&COL01", "HID_DEVICE_SYSTEM_MOUSE", "HID_DEVICE_UP:0001_U:0002", "HID_DEVICE" ]
+    },
+    {
+      "instanceId": "HID\\VID_046D&PID_C52B&MI_02&COL01\\7&UNIFC&0&0000",
+      "parentInstanceId": "USB\\VID_046D&PID_C52B\\5&1A2B3C4D&0&5",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "containerId": "{55555555-5555-5555-5555-555555555555}",
+      "hardwareIds": [ "HID\\VID_046D&PID_C52B&MI_02&COL01", "HID_DEVICE_UP:FF00_U:0001", "HID_DEVICE" ]
+    },
+
+    {
+      "instanceId": "BTHENUM\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002046D_PID&B016\\7&2A5B1C0&0&E1C2D3A4B5C6_C00000000",
+      "parentInstanceId": "USB\\VID_8087&PID_0026\\5&BT&0&10",
+      "className": "HIDClass",
+      "enumeratorName": "BTHENUM",
+      "friendlyName": "MX Anywhere 2",
+      "containerId": "{66666666-6666-6666-6666-666666666666}",
+      "hardwareIds": [ "BTHENUM\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002046D_PID&B016" ]
+    },
+    {
+      "instanceId": "HID\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002046D_PID&B016&COL01\\8&BTMOUSE&0&0000",
+      "parentInstanceId": "BTHENUM\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002046D_PID&B016\\7&2A5B1C0&0&E1C2D3A4B5C6_C00000000",
+      "className": "Mouse",
+      "enumeratorName": "HID",
+      "description": "Mouse compatível com HID",
+      "containerId": "{66666666-6666-6666-6666-666666666666}",
+      "hardwareIds": [ "HID\\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002046D_PID&B016&COL01", "HID_DEVICE_SYSTEM_MOUSE", "HID_DEVICE_UP:0001_U:0002", "HID_DEVICE" ]
+    },
+
+    {
+      "instanceId": "BTHLEDEVICE\\{00001812-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B35B_REV&0012_D1E2F3A4B5C6\\8&BLEKB&0&0019",
+      "parentInstanceId": "BTHLE\\DEV_D1E2F3A4B5C6\\7&BLE&0&D1E2F3A4B5C6",
+      "className": "HIDClass",
+      "enumeratorName": "BTHLEDEVICE",
+      "friendlyName": "K380 Multi-Device Keyboard",
+      "containerId": "{77777777-7777-7777-7777-777777777777}"
+    },
+    {
+      "instanceId": "HID\\{00001812-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B35B_REV&0012_D1E2F3A4B5C6&COL01\\9&BLEKBA&0&0000",
+      "parentInstanceId": "BTHLEDEVICE\\{00001812-0000-1000-8000-00805F9B34FB}_DEV_VID&02046D_PID&B35B_REV&0012_D1E2F3A4B5C6\\8&BLEKB&0&0019",
+      "className": "Keyboard",
+      "enumeratorName": "HID",
+      "containerId": "{77777777-7777-7777-7777-777777777777}",
+      "hardwareIds": [ "HID_DEVICE_SYSTEM_KEYBOARD", "HID_DEVICE_UP:0001_U:0006", "HID_DEVICE" ]
+    },
+
+    {
+      "instanceId": "USB\\VID_1A2C&PID_0E24\\0000000000",
+      "parentInstanceId": "USB\\ROOT_HUB30\\5&AAAA&0&0",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "busReportedDescription": "USB Keyboard",
+      "containerId": "{88888888-8888-8888-8888-888888888888}",
+      "hardwareIds": [ "USB\\VID_1A2C&PID_0E24&REV_0110", "USB\\VID_1A2C&PID_0E24" ]
+    },
+    {
+      "instanceId": "HID\\VID_1A2C&PID_0E24\\6&GENKB&0&0000",
+      "parentInstanceId": "USB\\VID_1A2C&PID_0E24\\0000000000",
+      "className": "Keyboard",
+      "enumeratorName": "HID",
+      "containerId": "{88888888-8888-8888-8888-888888888888}",
+      "hardwareIds": [ "HID\\VID_1A2C&PID_0E24", "HID_DEVICE_SYSTEM_KEYBOARD", "HID_DEVICE_UP:0001_U:0006", "HID_DEVICE" ]
+    },
+
+    {
+      "instanceId": "ROOT\\RDP_MOU\\0000",
+      "parentInstanceId": "HTREE\\ROOT\\0",
+      "className": "Mouse",
+      "enumeratorName": "ROOT",
+      "description": "Remote Desktop Mouse Device"
+    },
+    {
+      "instanceId": "TERMINPUT_BUS\\UMB\\2&3F9D0E8&0&TERMINPUT_DEVICE",
+      "className": "Keyboard",
+      "enumeratorName": "TERMINPUT_BUS",
+      "description": "Remote Desktop Keyboard Device"
+    }
+  ]
+}

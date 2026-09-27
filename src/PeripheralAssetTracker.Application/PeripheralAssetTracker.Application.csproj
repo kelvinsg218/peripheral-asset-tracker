@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>PeripheralAssetTracker.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PeripheralAssetTracker.Domain\PeripheralAssetTracker.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Only the provider-agnostic EF Core API (DbSet, transactions). No SQLite here. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PeripheralAssetTracker.Tests" />
+  </ItemGroup>
+
+</Project>

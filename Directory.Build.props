@@ -1,0 +1,16 @@
+<Project>
+  <!--
+    Target framework is centralized here. The development machine only had the .NET 9 SDK/runtime
+    available; to move to an LTS release (e.g. .NET 10) change this single value and the
+    EF Core package versions in Directory.Packages.props.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+</Project>

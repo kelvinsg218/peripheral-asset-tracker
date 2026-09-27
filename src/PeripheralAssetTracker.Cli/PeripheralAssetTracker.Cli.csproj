@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PeripheralAssetTracker.Cli</RootNamespace>
+    <AssemblyName>pat</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PeripheralAssetTracker.Infrastructure\PeripheralAssetTracker.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PeripheralAssetTracker.Tests" />
+  </ItemGroup>
+
+</Project>

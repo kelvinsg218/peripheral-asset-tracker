@@ -1,0 +1,317 @@
+{
+  "capturedAt": "2026-09-26T21:57:28.8825015-03:00",
+  "description": "PnP snapshot (HID/Mouse/Keyboard nodes and ancestors) from TEST-LAPTOP",
+  "nodes": [
+    {
+      "instanceId": "ACPI\\AMDI0010\\0",
+      "parentInstanceId": "ACPI_HAL\\PNP0C08\\0",
+      "className": "System",
+      "enumeratorName": "ACPI",
+      "description": "AMD I2C Controller",
+      "manufacturer": "Advanced Micro Devices, Inc.",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "amdi2c",
+      "hardwareIds": [
+        "ACPI\\VEN_AMDI\u0026DEV_0010",
+        "ACPI\\AMDI0010",
+        "*AMDI0010"
+      ]
+    },
+    {
+      "instanceId": "ACPI\\ELAN06FA\\4",
+      "parentInstanceId": "ACPI\\AMDI0010\\0",
+      "className": "HIDClass",
+      "enumeratorName": "ACPI",
+      "description": "Dispositivo HID I2C",
+      "manufacturer": "Microsoft",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "hidi2c",
+      "hardwareIds": [
+        "ACPI\\VEN_ELAN\u0026DEV_06FA",
+        "ACPI\\ELAN06FA",
+        "*ELAN06FA"
+      ]
+    },
+    {
+      "instanceId": "ACPI\\FUJ7401\\4\u002611493e97\u00260",
+      "parentInstanceId": "PCI\\VEN_1022\u0026DEV_790E\u0026SUBSYS_790E1022\u0026REV_51\\3\u00262411e6fe\u00260\u0026A3",
+      "className": "Keyboard",
+      "enumeratorName": "ACPI",
+      "description": "Teclado Padr\u00E3o PS/2",
+      "manufacturer": "(teclados padr\u00F5es)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "i8042prt",
+      "hardwareIds": [
+        "ACPI\\VEN_FUJ\u0026DEV_7401",
+        "ACPI\\FUJ7401",
+        "*FUJ7401"
+      ]
+    },
+    {
+      "instanceId": "ACPI\\PNP0A08\\1",
+      "parentInstanceId": "ACPI_HAL\\PNP0C08\\0",
+      "className": "System",
+      "enumeratorName": "ACPI",
+      "description": "Complexo da Raiz de PCI Express",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "pci",
+      "hardwareIds": [
+        "ACPI\\VEN_PNP\u0026DEV_0A08",
+        "ACPI\\PNP0A08",
+        "*PNP0A08"
+      ]
+    },
+    {
+      "instanceId": "ACPI_HAL\\PNP0C08\\0",
+      "parentInstanceId": "ROOT\\ACPI_HAL\\0000",
+      "className": "System",
+      "enumeratorName": "ACPI_HAL",
+      "description": "Microsoft ACPI-Compliant System",
+      "manufacturer": "Microsoft",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "ACPI",
+      "hardwareIds": [
+        "ACPI_HAL\\PNP0C08",
+        "*PNP0C08"
+      ]
+    },
+    {
+      "instanceId": "HID\\ELAN06FA\u0026Col01\\4\u002688a2207\u00260\u00260000",
+      "parentInstanceId": "ACPI\\ELAN06FA\\4",
+      "className": "Mouse",
+      "enumeratorName": "HID",
+      "description": "Mouse compat\u00EDvel com HID",
+      "manufacturer": "Microsoft",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "mouhid",
+      "hardwareIds": [
+        "HID\\VEN_ELAN\u0026DEV_06FA\u0026Col01",
+        "HID\\ELAN06FA\u0026Col01",
+        "HID\\*ELAN06FA\u0026Col01",
+        "HID\\VID_04F3\u0026UP:0001_U:0002",
+        "HID_DEVICE_SYSTEM_MOUSE",
+        "HID_DEVICE_UP:0001_U:0002",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "instanceId": "HID\\ELAN06FA\u0026Col02\\4\u002688a2207\u00260\u00260001",
+      "parentInstanceId": "ACPI\\ELAN06FA\\4",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "description": "Dispositivo definido pelo fornecedor compat\u00EDvel com HID",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "hardwareIds": [
+        "HID\\VEN_ELAN\u0026DEV_06FA\u0026Col02",
+        "HID\\ELAN06FA\u0026Col02",
+        "HID\\*ELAN06FA\u0026Col02",
+        "HID\\VID_04F3\u0026UP:FF00_U:0001",
+        "HID_DEVICE_UP:FF00_U:0001",
+        "HID_DEVICE_UPR:FF00-FFFF",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "instanceId": "HID\\ELAN06FA\u0026Col03\\4\u002688a2207\u00260\u00260002",
+      "parentInstanceId": "ACPI\\ELAN06FA\\4",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "description": "Teclado sens\u00EDvel ao toque compat\u00EDvel com HID",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "hardwareIds": [
+        "HID\\VEN_ELAN\u0026DEV_06FA\u0026Col03",
+        "HID\\ELAN06FA\u0026Col03",
+        "HID\\*ELAN06FA\u0026Col03",
+        "HID\\VID_04F3\u0026UP:000D_U:0005",
+        "HID_DEVICE_UP:000D_U:0005",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "instanceId": "HID\\ELAN06FA\u0026Col04\\4\u002688a2207\u00260\u00260003",
+      "parentInstanceId": "ACPI\\ELAN06FA\\4",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "description": "Microsoft Input Configuration Device",
+      "manufacturer": "Microsoft",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "MTConfig",
+      "hardwareIds": [
+        "HID\\VEN_ELAN\u0026DEV_06FA\u0026Col04",
+        "HID\\ELAN06FA\u0026Col04",
+        "HID\\*ELAN06FA\u0026Col04",
+        "HID\\VID_04F3\u0026UP:000D_U:000E",
+        "HID_DEVICE_UP:000D_U:000E",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "instanceId": "HID\\VID_05AC\u0026PID_110B\u0026MI_03\\8\u0026cd4b1f0\u00260\u00260000",
+      "parentInstanceId": "USB\\VID_05AC\u0026PID_110B\u0026MI_03\\7\u002635994b77\u00260\u00260003",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "description": "HID-compliant consumer control device",
+      "manufacturer": "Microsoft",
+      "containerId": "{033AFF4F-C2E9-553F-9765-C7ED9AE7EB71}",
+      "hardwareIds": [
+        "HID\\VID_05AC\u0026PID_110B\u0026REV_2681\u0026MI_03",
+        "HID\\VID_05AC\u0026PID_110B\u0026MI_03",
+        "HID\\VID_05AC\u0026UP:000C_U:0001",
+        "HID_DEVICE_SYSTEM_CONSUMER",
+        "HID_DEVICE_UP:000C_U:0001",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "instanceId": "HID\\VID_05AC\u0026PID_110B\u0026MI_04\\8\u002630abefb2\u00260\u00260000",
+      "parentInstanceId": "USB\\VID_05AC\u0026PID_110B\u0026MI_04\\7\u002635994b77\u00260\u00260004",
+      "className": "HIDClass",
+      "enumeratorName": "HID",
+      "description": "Dispositivo definido pelo fornecedor compat\u00EDvel com HID",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "containerId": "{033AFF4F-C2E9-553F-9765-C7ED9AE7EB71}",
+      "hardwareIds": [
+        "HID\\VID_05AC\u0026PID_110B\u0026REV_2681\u0026MI_04",
+        "HID\\VID_05AC\u0026PID_110B\u0026MI_04",
+        "HID\\VID_05AC\u0026UP:FF00_U:0001",
+        "HID_DEVICE_UP:FF00_U:0001",
+        "HID_DEVICE_UPR:FF00-FFFF",
+        "HID_DEVICE"
+      ]
+    },
+    {
+      "instanceId": "HTREE\\ROOT\\0",
+      "enumeratorName": "HTREE",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "hardwareIds": []
+    },
+    {
+      "instanceId": "PCI\\VEN_1022\u0026DEV_14B9\u0026SUBSYS_14B91022\u0026REV_00\\3\u00262411e6fe\u00260\u002641",
+      "parentInstanceId": "ACPI\\PNP0A08\\1",
+      "className": "System",
+      "enumeratorName": "PCI",
+      "description": "Porta Raiz do PCI Express",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "busReportedDescription": "Ponte PCI para PCI",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "pci",
+      "hardwareIds": [
+        "PCI\\VEN_1022\u0026DEV_14B9\u0026SUBSYS_14B91022\u0026REV_00",
+        "PCI\\VEN_1022\u0026DEV_14B9\u0026SUBSYS_14B91022",
+        "PCI\\VEN_1022\u0026DEV_14B9\u0026CC_060400",
+        "PCI\\VEN_1022\u0026DEV_14B9\u0026CC_0604"
+      ]
+    },
+    {
+      "instanceId": "PCI\\VEN_1022\u0026DEV_1503\u0026SUBSYS_380917AA\u0026REV_00\\4\u0026238538c7\u00260\u00260341",
+      "parentInstanceId": "PCI\\VEN_1022\u0026DEV_14B9\u0026SUBSYS_14B91022\u0026REV_00\\3\u00262411e6fe\u00260\u002641",
+      "className": "USB",
+      "enumeratorName": "PCI",
+      "friendlyName": "AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)",
+      "description": "Controlador Host Compat\u00EDvel com USB xHCI",
+      "manufacturer": "Controlador Host USB xHCI Gen\u00E9rico",
+      "busReportedDescription": "Controlador USB (Universal Serial Bus)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "USBXHCI",
+      "hardwareIds": [
+        "PCI\\VEN_1022\u0026DEV_1503\u0026SUBSYS_380917AA\u0026REV_00",
+        "PCI\\VEN_1022\u0026DEV_1503\u0026SUBSYS_380917AA",
+        "PCI\\VEN_1022\u0026DEV_1503\u0026CC_0C0330",
+        "PCI\\VEN_1022\u0026DEV_1503\u0026CC_0C03"
+      ]
+    },
+    {
+      "instanceId": "PCI\\VEN_1022\u0026DEV_790E\u0026SUBSYS_790E1022\u0026REV_51\\3\u00262411e6fe\u00260\u0026A3",
+      "parentInstanceId": "ACPI\\PNP0A08\\1",
+      "className": "System",
+      "enumeratorName": "PCI",
+      "description": "PCI standard ISA bridge",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "busReportedDescription": "Ponte PCI para ISA",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "msisadrv",
+      "hardwareIds": [
+        "PCI\\VEN_1022\u0026DEV_790E\u0026SUBSYS_790E1022\u0026REV_51",
+        "PCI\\VEN_1022\u0026DEV_790E\u0026SUBSYS_790E1022",
+        "PCI\\VEN_1022\u0026DEV_790E\u0026CC_060100",
+        "PCI\\VEN_1022\u0026DEV_790E\u0026CC_0601"
+      ]
+    },
+    {
+      "instanceId": "ROOT\\ACPI_HAL\\0000",
+      "parentInstanceId": "HTREE\\ROOT\\0",
+      "className": "Computer",
+      "enumeratorName": "ROOT",
+      "description": "PC ACPI de base x64",
+      "manufacturer": "(Computadores padr\u00E3o)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "\\Driver\\ACPI_HAL",
+      "hardwareIds": [
+        "acpiapic"
+      ]
+    },
+    {
+      "instanceId": "USB\\ROOT_HUB30\\5\u00263616441\u00260\u00260",
+      "parentInstanceId": "PCI\\VEN_1022\u0026DEV_1503\u0026SUBSYS_380917AA\u0026REV_00\\4\u0026238538c7\u00260\u00260341",
+      "className": "USB",
+      "enumeratorName": "USB",
+      "description": "USB Root Hub (USB 3.0)",
+      "manufacturer": "(Standard USB HUBs)",
+      "containerId": "{00000000-0000-0000-FFFF-FFFFFFFFFFFF}",
+      "service": "USBHUB3",
+      "hardwareIds": [
+        "USB\\ROOT_HUB30\u0026VID1022\u0026PID1503\u0026REV0000",
+        "USB\\ROOT_HUB30\u0026VID1022\u0026PID1503",
+        "USB\\ROOT_HUB30"
+      ]
+    },
+    {
+      "instanceId": "USB\\VID_05AC\u0026PID_110B\u0026MI_03\\7\u002635994b77\u00260\u00260003",
+      "parentInstanceId": "USB\\VID_05AC\u0026PID_110B\\TESTSERIAL01",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "description": "Dispositivo de Entrada USB",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "busReportedDescription": "EarPods",
+      "containerId": "{033AFF4F-C2E9-553F-9765-C7ED9AE7EB71}",
+      "service": "HidUsb",
+      "hardwareIds": [
+        "USB\\VID_05AC\u0026PID_110B\u0026REV_2681\u0026MI_03",
+        "USB\\VID_05AC\u0026PID_110B\u0026MI_03"
+      ]
+    },
+    {
+      "instanceId": "USB\\VID_05AC\u0026PID_110B\u0026MI_04\\7\u002635994b77\u00260\u00260004",
+      "parentInstanceId": "USB\\VID_05AC\u0026PID_110B\\TESTSERIAL01",
+      "className": "HIDClass",
+      "enumeratorName": "USB",
+      "description": "Dispositivo de Entrada USB",
+      "manufacturer": "(Dispositivos padr\u00E3o do sistema)",
+      "busReportedDescription": "EarPods",
+      "containerId": "{033AFF4F-C2E9-553F-9765-C7ED9AE7EB71}",
+      "service": "HidUsb",
+      "hardwareIds": [
+        "USB\\VID_05AC\u0026PID_110B\u0026REV_2681\u0026MI_04",
+        "USB\\VID_05AC\u0026PID_110B\u0026MI_04"
+      ]
+    },
+    {
+      "instanceId": "USB\\VID_05AC\u0026PID_110B\\TESTSERIAL01",
+      "parentInstanceId": "USB\\ROOT_HUB30\\5\u00263616441\u00260\u00260",
+      "className": "USB",
+      "enumeratorName": "USB",
+      "description": "USB Composite Device",
+      "manufacturer": "(Standard USB Host Controller)",
+      "busReportedDescription": "EarPods",
+      "containerId": "{033AFF4F-C2E9-553F-9765-C7ED9AE7EB71}",
+      "service": "usbccgp",
+      "hardwareIds": [
+        "USB\\VID_05AC\u0026PID_110B\u0026REV_2681",
+        "USB\\VID_05AC\u0026PID_110B"
+      ]
+    }
+  ]
+}
