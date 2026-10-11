@@ -61,9 +61,9 @@ internal sealed class Workflows(CliSession session)
         Ui.Field("Tipo sugerido", Views.TypeLabel(d.SuggestedType));
         Ui.Field("Fabricante", d.Manufacturer);
         Ui.Field("VID / PID", d.VendorId is null ? null : $"{d.VendorId} / {ConsoleUi.OrUnavailable(d.ProductId)}");
-        Ui.Field("Serial", d.SerialNumber);
+        Ui.Field("Número de série", d.SerialNumber);
         Ui.Field("Conexão", Views.BusLabel(d.BusType));
-        Ui.Field("PNP Device ID", d.PnpDeviceId);
+        Ui.Field("ID do dispositivo PnP", d.PnpDeviceId);
         Ui.Field("Fingerprint", item.Fingerprint.Fingerprint);
         Ui.Field("Confiança", $"{Views.Confidence(item.Fingerprint.Confidence)} — {item.Fingerprint.Basis}");
         if (item.Fingerprint.Confidence == FingerprintConfidence.Low)
@@ -170,12 +170,12 @@ internal sealed class Workflows(CliSession session)
         }
 
         Ui.Line();
-        Ui.Field("Device", device.DeviceName);
-        Ui.Field("Current responsible", device.ResponsiblePersonName ?? "Nenhum");
-        Ui.Field("Current computer", device.ExpectedComputerHostname ?? "Nenhum");
-        await ShowTargetAsync(newPerson, newComputer, "New responsible", "New computer");
-        Ui.Field("Reason", reason);
-        if (!Ui.Confirm("Confirm?"))
+        Ui.Field("Dispositivo", device.DeviceName);
+        Ui.Field("Responsável atual", device.ResponsiblePersonName ?? "Nenhum");
+        Ui.Field("Computador atual", device.ExpectedComputerHostname ?? "Nenhum");
+        await ShowTargetAsync(newPerson, newComputer, "Novo responsável", "Novo computador");
+        Ui.Field("Motivo", reason);
+        if (!Ui.Confirm("Confirmar?"))
         {
             Ui.Info("Transferência cancelada.");
             return;

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>PeripheralAssetTracker.Desktop</RootNamespace>
+    <AssemblyName>PeripheralAssetTracker</AssemblyName>
+    <AssemblyTitle>Peripheral Asset Tracker</AssemblyTitle>
+    <Description>Inventário local de periféricos (mouse, teclado e outros) para Windows.</Description>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <SatelliteResourceLanguages>pt-BR</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PeripheralAssetTracker.Infrastructure\PeripheralAssetTracker.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PeripheralAssetTracker.Tests" />
+  </ItemGroup>
+
+</Project>

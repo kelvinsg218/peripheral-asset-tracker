@@ -42,17 +42,8 @@ public static class InventoryCsvFormatter
 
     public static string Format(IEnumerable<DeviceSummary> devices, char delimiter, TimeZoneInfo timeZone)
     {
-        if (delimiter is '"' or '\r' or '\n')
-        {
-            throw new ArgumentException("Invalid CSV delimiter.", nameof(delimiter));
-        }
-
-        var builder = new StringBuilder();
-        AppendRow(builder, Headers, delimiter);
-        foreach (var d in devices)
-        {
-            AppendRow(builder,
-            [
+        return FormatTable(Headers, devices.Select(d => new[]
+            {
                 d.Fingerprint,
                 d.Confidence.ToString().ToUpperInvariant(),
                 d.DeviceType.ToString(),
@@ -67,7 +58,22 @@ public static class InventoryCsvFormatter
                 TimeZoneInfo.ConvertTimeFromUtc(DateTime.SpecifyKind(d.LastSeenAt, DateTimeKind.Utc), timeZone)
                     .ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 string.Join('|', d.Conditions.ToCodes())
-            ], delimiter);
+            }), delimiter);
+    }
+
+    /// <summary>Any table with the same quoting and formula-injection rules (used by the localized desktop report).</summary>
+    public static string FormatTable(IReadOnlyList<string> headers, IEnumerable<IReadOnlyList<string?>> rows, char delimiter)
+    {
+        if (delimiter is '"' or '\r' or '\n')
+        {
+            throw new ArgumentException("Invalid CSV delimiter.", nameof(delimiter));
+        }
+
+        var builder = new StringBuilder();
+        AppendRow(builder, headers, delimiter);
+        foreach (var row in rows)
+        {
+            AppendRow(builder, row, delimiter);
         }
 
         return builder.ToString();

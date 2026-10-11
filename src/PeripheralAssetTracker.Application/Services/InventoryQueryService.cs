@@ -87,7 +87,8 @@ public sealed class InventoryQueryService(IAssetTrackerDbContext db)
         };
     }
 
-    private static bool Matches(DeviceSummary s, string term)
+    /// <summary>Same matching rules as <see cref="SearchAsync"/>, for callers that filter an already loaded list.</summary>
+    public static bool Matches(DeviceSummary s, string term)
     {
         var upper = term.ToUpperInvariant();
         return s.Fingerprint.StartsWith(upper, StringComparison.Ordinal) ||

@@ -1,0 +1,319 @@
+<UserControl x:Class="PeripheralAssetTracker.Desktop.Views.InventoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="Field" TargetType="DockPanel">
+            <Setter Property="Margin" Value="0,4" />
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock" BasedOn="{StaticResource Text.Label}">
+            <Setter Property="Width" Value="132" />
+            <Setter Property="FontSize" Value="12.5" />
+        </Style>
+        <Style x:Key="Mono" TargetType="TextBlock" BasedOn="{StaticResource Text.Value}">
+            <Setter Property="FontFamily" Value="{StaticResource Font.Mono}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style x:Key="Section" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.TextMuted}" />
+            <Setter Property="Margin" Value="0,20,0,6" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ===== Toolbar ===== -->
+        <Grid Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="180" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=150}" Padding="32,7,9,7"
+                         Tag="Pesquisar por nome, fabricante, VID/PID, nº de série ou responsável"
+                         AutomationProperties.Name="Pesquisar dispositivos" />
+                <TextBlock Style="{StaticResource Icon}" Text="&#xE721;" FontSize="13" Margin="12,0,0,0" HorizontalAlignment="Left"
+                           Foreground="{StaticResource Brush.TextMuted}" IsHitTestVisible="False" />
+            </Grid>
+            <ComboBox Grid.Column="1" Width="180" Margin="10,0,0,0" ItemsSource="{Binding CategoryOptions}"
+                      SelectedItem="{Binding SelectedCategory}" AutomationProperties.Name="Filtrar por categoria" />
+            <ComboBox Grid.Column="2" Width="180" Margin="10,0,0,0" ItemsSource="{Binding StatusOptions}"
+                      SelectedItem="{Binding SelectedStatus}" AutomationProperties.Name="Filtrar por status" />
+            <Button Grid.Column="3" Margin="10,0,0,0" Command="{Binding ExportCommand}" AutomationProperties.Name="Exportar relatório"
+                    ToolTip="Salva os dispositivos exibidos em um arquivo CSV, que pode ser aberto no Excel.">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Icon}" Text="&#xE74E;" FontSize="13" />
+                    <TextBlock Text="Exportar relatório" Margin="8,0,0,0" />
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- ===== List + details ===== -->
+        <Grid x:Name="Body" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition x:Name="DetailsColumn" Width="360" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="ListRow" Height="*" />
+                <RowDefinition x:Name="DetailsRow" Height="0" />
+            </Grid.RowDefinitions>
+
+            <Border Style="{StaticResource Card}" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <DataGrid x:Name="DevicesGrid" ItemsSource="{Binding DevicesView}" SelectedItem="{Binding SelectedDevice}" Margin="1"
+                              SizeChanged="DevicesGrid_SizeChanged" SelectionChanged="DevicesGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Estado" Width="134" MinWidth="134" SortMemberPath="PresenceLabel">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" ToolTip="{Binding PresenceHint}" Background="Transparent">
+                                            <Ellipse Width="8" Height="8" VerticalAlignment="Center"
+                                                     Fill="{Binding Presence, Converter={StaticResource PresenceBrush}}" />
+                                            <TextBlock Text="{Binding PresenceLabel}" Margin="8,0,0,0" VerticalAlignment="Center"
+                                                       Foreground="{Binding Presence, Converter={StaticResource PresenceBrush}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Nome" Width="2*" MinWidth="160" SortMemberPath="Name">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource Icon}" Text="{Binding TypeGlyph}" FontSize="14"
+                                                       Foreground="{StaticResource Brush.TextSecondary}" />
+                                            <TextBlock Text="{Binding Name}" Margin="10,0,0,0" Style="{StaticResource Cell.Text}" ToolTip="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn x:Name="CategoryColumn" Header="Categoria" Binding="{Binding TypeLabel}" Width="90" MinWidth="90" ElementStyle="{StaticResource Cell.Muted}" />
+                            <DataGridTextColumn x:Name="ManufacturerColumn" Header="Fabricante" Binding="{Binding Manufacturer}" Width="*" MinWidth="90" ElementStyle="{StaticResource Cell.Muted}" />
+                            <DataGridTextColumn x:Name="ModelColumn" Header="Modelo (VID:PID)" Binding="{Binding Model}" Width="125" MinWidth="125" ElementStyle="{StaticResource Cell.Muted}" />
+                            <DataGridTextColumn Header="Responsável" Binding="{Binding Responsible}" Width="*" MinWidth="100" ElementStyle="{StaticResource Cell.Muted}" />
+                            <DataGridTextColumn Header="Computador associado" Binding="{Binding ExpectedComputer}" Width="*" MinWidth="110" ElementStyle="{StaticResource Cell.Muted}" />
+                            <DataGridTextColumn x:Name="LastSeenColumn" Header="Última detecção" Binding="{Binding LastSeen}" Width="120" MinWidth="120" SortMemberPath="Summary.LastSeenAt"
+                                                ElementStyle="{StaticResource Cell.Muted}" />
+                            <DataGridTemplateColumn Header="Alertas" Width="*" MinWidth="110" SortMemberPath="AlertsText">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding AlertsText}" ToolTip="{Binding AlertsText}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Cell.Muted}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasAlerts}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource Brush.Yellow}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="24" MaxWidth="420"
+                                Visibility="{Binding HasItems, ElementName=DevicesGrid, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
+                        <TextBlock Style="{StaticResource Icon}" Text="&#xE8F1;" FontSize="30" HorizontalAlignment="Center"
+                                   Foreground="{StaticResource Brush.TextMuted}" />
+                        <TextBlock Text="Nenhum dispositivo encontrado" Style="{StaticResource Text.H2}" HorizontalAlignment="Center" Margin="0,12,0,0" />
+                        <TextBlock Style="{StaticResource Text.Subtitle}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,4,0,0"
+                                   Text="Cadastre periféricos na página &quot;Verificar dispositivos&quot; ou ajuste a pesquisa e os filtros." />
+                        <Button Content="Limpar filtros" Command="{Binding ClearFiltersCommand}" HorizontalAlignment="Center" Margin="0,14,0,0" />
+                    </StackPanel>
+
+                    <Border Grid.Row="1" BorderBrush="{StaticResource Brush.Border}" BorderThickness="0,1,0,0" Padding="14,9">
+                        <TextBlock Text="{Binding InventoryCountText}" Style="{StaticResource Text.Label}" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ===== Device details ===== -->
+            <Border x:Name="Details" Grid.Column="1" Style="{StaticResource Card}" Margin="12,0,0,0" Padding="0">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="24"
+                                Visibility="{Binding HasSelection, Converter={StaticResource BoolToVis}, ConverterParameter=Invert}">
+                        <TextBlock Style="{StaticResource Icon}" Text="&#xE946;" FontSize="26" HorizontalAlignment="Center"
+                                   Foreground="{StaticResource Brush.TextMuted}" />
+                        <TextBlock Text="Selecione um dispositivo para ver os detalhes." Style="{StaticResource Text.Subtitle}"
+                                   TextAlignment="Center" Margin="0,10,0,0" />
+                    </StackPanel>
+
+                    <ScrollViewer x:Name="DetailsScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                                  Visibility="{Binding HasSelection, Converter={StaticResource BoolToVis}}">
+                        <StackPanel Margin="20,18,20,20">
+                            <TextBlock Text="DETALHES DO DISPOSITIVO" Style="{StaticResource Section}" Margin="0,0,0,10" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Width="42" Height="42" CornerRadius="10" Background="{StaticResource Brush.Elevated}" VerticalAlignment="Top">
+                                    <TextBlock Style="{StaticResource Icon}" Text="{Binding SelectedDevice.TypeGlyph}" FontSize="19" HorizontalAlignment="Center" />
+                                </Border>
+                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                    <TextBlock Text="{Binding SelectedDevice.Name}" Style="{StaticResource Text.H2}" FontSize="16" TextWrapping="Wrap" />
+                                    <TextBlock Style="{StaticResource Text.Label}" Margin="0,2,0,0">
+                                        <Run Text="{Binding SelectedDevice.TypeLabel, Mode=OneWay}" />
+                                        <Run Text="·" />
+                                        <Run Text="Confiança" />
+                                        <Run Text="{Binding SelectedDevice.ConfidenceLabel, Mode=OneWay}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Style="{StaticResource Badge}" Margin="0,14,0,0"
+                                    Background="{Binding SelectedDevice.Presence, Converter={StaticResource PresenceBrush}, ConverterParameter=Soft}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="7" Height="7" VerticalAlignment="Center"
+                                             Fill="{Binding SelectedDevice.Presence, Converter={StaticResource PresenceBrush}}" />
+                                    <TextBlock Text="{Binding SelectedDevice.PresenceLabel}" Margin="7,0,0,0" FontSize="12" FontWeight="SemiBold"
+                                               Foreground="{Binding SelectedDevice.Presence, Converter={StaticResource PresenceBrush}}" />
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="{Binding SelectedDevice.PresenceHint}" Style="{StaticResource Text.Label}" FontSize="12.5"
+                                       TextWrapping="Wrap" Margin="0,6,0,0" />
+                            <TextBlock Text="{Binding SelectedDevice.AlertsText}" TextWrapping="Wrap" Margin="0,6,0,0" FontSize="12.5"
+                                       Foreground="{StaticResource Brush.Yellow}"
+                                       Visibility="{Binding SelectedDevice.HasAlerts, Converter={StaticResource BoolToVis}}" />
+
+                            <TextBlock Text="ATRIBUIÇÃO" Style="{StaticResource Section}" />
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Responsável" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.Responsible}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Departamento" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.Department}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Computador associado" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.ExpectedComputer}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Atribuído em" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.AssignedAt}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <Button Style="{StaticResource Button.Small}" Content="Atribuir…" Command="{Binding AssignCommand}" Margin="0,0,8,0"
+                                        ToolTip="Define o responsável e/ou o computador esperado (disponível quando não há atribuição ativa)." />
+                                <Button Style="{StaticResource Button.Small}" Content="Transferir…" Command="{Binding TransferCommand}"
+                                        ToolTip="Registra a troca de responsável ou de computador, com motivo (disponível quando há atribuição ativa)." />
+                            </StackPanel>
+
+                            <TextBlock Text="DETECÇÃO" Style="{StaticResource Section}" />
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Última detecção" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.LastSeen}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Último computador" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.LastSeenComputer}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Primeira detecção" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.FirstSeen}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Cadastrado em" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.RegisteredAt}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+
+                            <TextBlock Text="IDENTIFICAÇÃO" Style="{StaticResource Section}" />
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Fabricante" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.Manufacturer}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="VID (fabricante)" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.VendorId}" Style="{StaticResource Mono}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="PID (modelo)" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.ProductId}" Style="{StaticResource Mono}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Número de série" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.SerialNumber}" Style="{StaticResource Mono}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Endereço Bluetooth" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.BluetoothAddress}" Style="{StaticResource Mono}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Conexão" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.Bus}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="ID de instância" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.PnpDeviceId}" Style="{StaticResource Mono}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Base da identificação" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding SelectedDevice.FingerprintBasis}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Fingerprint" Style="{StaticResource FieldLabel}" VerticalAlignment="Top" />
+                                <StackPanel>
+                                    <TextBlock Text="{Binding SelectedDevice.Fingerprint}" Style="{StaticResource Mono}" FontSize="11" />
+                                    <Button Style="{StaticResource Button.Small}" Content="Copiar fingerprint" HorizontalAlignment="Left"
+                                            Margin="0,6,0,0" Command="{Binding CopyFingerprintCommand}" />
+                                </StackPanel>
+                            </DockPanel>
+                            <TextBlock Style="{StaticResource Text.Label}" FontSize="12" TextWrapping="Wrap" Margin="0,8,0,0"
+                                       Text="O fingerprint reconhece o dispositivo a partir dos dados fornecidos pelo Windows. Ele não indica a localização física do dispositivo." />
+
+                            <TextBlock Text="HISTÓRICO DO DISPOSITIVO" Style="{StaticResource Section}" />
+                            <ItemsControl ItemsSource="{Binding SelectedHistory}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="14" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Ellipse Width="7" Height="7" VerticalAlignment="Top" Margin="0,5,0,0" HorizontalAlignment="Left">
+                                                <Ellipse.Style>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Fill" Value="{StaticResource Brush.Neutral}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsWarning}" Value="True">
+                                                                <Setter Property="Fill" Value="{StaticResource Brush.Yellow}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Ellipse.Style>
+                                            </Ellipse>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Style="{StaticResource Text.Label}" FontSize="12">
+                                                    <Run Text="{Binding When, Mode=OneWay}" />
+                                                    <Run Text="·" />
+                                                    <Run Text="{Binding Kind, Mode=OneWay}" FontWeight="SemiBold" />
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0,2,0,0" FontSize="12.5" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

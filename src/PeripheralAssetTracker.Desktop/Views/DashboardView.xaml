@@ -1,0 +1,280 @@
+<UserControl x:Class="PeripheralAssetTracker.Desktop.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="KpiCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Margin" Value="6" />
+            <Setter Property="Padding" Value="18,16" />
+        </Style>
+        <Style x:Key="KpiIcon" TargetType="Border">
+            <Setter Property="Width" Value="34" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Background" Value="{StaticResource Brush.NeutralSoft}" />
+        </Style>
+        <Style x:Key="Bar" TargetType="ProgressBar">
+            <Setter Property="Height" Value="6" />
+            <Setter Property="Maximum" Value="100" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.Green}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid>
+                            <Border x:Name="PART_Track" CornerRadius="3" Background="{StaticResource Brush.Elevated}" />
+                            <Border x:Name="PART_Indicator" CornerRadius="3" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Field" TargetType="DockPanel">
+            <Setter Property="Margin" Value="0,4" />
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock" BasedOn="{StaticResource Text.Label}">
+            <Setter Property="Width" Value="128" />
+            <Setter Property="FontSize" Value="12.5" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="-6,0,-6,0">
+        <StackPanel Margin="0,0,0,8">
+            <!-- ===== Indicators ===== -->
+            <UniformGrid x:Name="Kpis" Columns="3">
+                <Border Style="{StaticResource KpiCard}" ToolTip="Total de periféricos cadastrados no inventário.">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Periféricos registrados" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            <TextBlock Text="{Binding Overview.Total}" Style="{StaticResource Text.Kpi}" Margin="0,6,0,0" />
+                            <TextBlock Text="no inventário" Style="{StaticResource Text.Label}" />
+                        </StackPanel>
+                        <Border Style="{StaticResource KpiIcon}">
+                            <TextBlock Style="{StaticResource Icon}" Text="&#xE8F1;" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource Brush.TextSecondary}" />
+                        </Border>
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource KpiCard}" ToolTip="Cadastrados e detectados na última verificação deste computador.">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Dispositivos conectados" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            <TextBlock Text="{Binding Overview.Connected}" Style="{StaticResource Text.Kpi}" Foreground="{StaticResource Brush.Green}" Margin="0,6,0,0" />
+                            <TextBlock Text="detectados neste computador" Style="{StaticResource Text.Label}" />
+                        </StackPanel>
+                        <Border Style="{StaticResource KpiIcon}" Background="{StaticResource Brush.GreenSoft}">
+                            <TextBlock Style="{StaticResource Icon}" Text="&#xE88E;" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource Brush.Green}" />
+                        </Border>
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource KpiCard}" ToolTip="Associados a este computador, mas ausentes na última verificação.">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Dispositivos desconectados" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            <TextBlock Text="{Binding Overview.Disconnected}" Margin="0,6,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource Text.Kpi}">
+                                        <Setter Property="Foreground" Value="{StaticResource Brush.Yellow}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Overview.Disconnected}" Value="0">
+                                                <Setter Property="Foreground" Value="{StaticResource Brush.Text}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock Text="esperados aqui e não detectados" Style="{StaticResource Text.Label}" />
+                        </StackPanel>
+                        <Border Style="{StaticResource KpiIcon}" Background="{StaticResource Brush.YellowSoft}">
+                            <TextBlock Style="{StaticResource Icon}" Text="&#xE7BA;" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource Brush.Yellow}" />
+                        </Border>
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource KpiCard}" ToolTip="Associados a outros computadores ou ainda não verificados: este computador não consegue confirmar o estado.">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Estado desconhecido" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            <TextBlock Text="{Binding Overview.Unknown}" Style="{StaticResource Text.Kpi}" Foreground="{StaticResource Brush.TextSecondary}" Margin="0,6,0,0" />
+                            <TextBlock Text="em outros computadores" Style="{StaticResource Text.Label}" />
+                        </StackPanel>
+                        <Border Style="{StaticResource KpiIcon}">
+                            <TextBlock Style="{StaticResource Icon}" Text="&#xE9CE;" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource Brush.TextSecondary}" />
+                        </Border>
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource KpiCard}" ToolTip="Periféricos conectados agora que ainda não foram cadastrados.">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Novos detectados" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            <TextBlock Text="{Binding Overview.NewDetected}" Style="{StaticResource Text.Kpi}" Margin="0,6,0,0" />
+                            <TextBlock Text="conectados e não cadastrados" Style="{StaticResource Text.Label}" />
+                        </StackPanel>
+                        <Border Style="{StaticResource KpiIcon}">
+                            <TextBlock Style="{StaticResource Icon}" Text="&#xE710;" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource Brush.TextSecondary}" />
+                        </Border>
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource KpiCard}" ToolTip="Dispositivos cadastrados nos últimos 7 dias.">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Identificados recentemente" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            <TextBlock Text="{Binding Overview.RecentlyRegistered}" Style="{StaticResource Text.Kpi}" Margin="0,6,0,0" />
+                            <TextBlock Text="cadastrados nos últimos 7 dias" Style="{StaticResource Text.Label}" />
+                        </StackPanel>
+                        <Border Style="{StaticResource KpiIcon}">
+                            <TextBlock Style="{StaticResource Icon}" Text="&#xE823;" FontSize="15" HorizontalAlignment="Center" Foreground="{StaticResource Brush.TextSecondary}" />
+                        </Border>
+                    </Grid>
+                </Border>
+            </UniformGrid>
+
+            <!-- ===== Panels ===== -->
+            <Grid x:Name="Panels" Margin="6,6,6,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition x:Name="SideColumn" Width="360" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel x:Name="MainPanel">
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Alertas do inventário" Style="{StaticResource Text.H2}" Margin="0,0,0,14" />
+                            <ItemsControl ItemsSource="{Binding Alerts}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border Width="30" Height="30" CornerRadius="7" VerticalAlignment="Top"
+                                                    Background="{Binding Severity, Converter={StaticResource SeverityBrush}, ConverterParameter=Soft}">
+                                                <TextBlock Style="{StaticResource Icon}" Text="{Binding Glyph}" FontSize="13" HorizontalAlignment="Center"
+                                                           Foreground="{Binding Severity, Converter={StaticResource SeverityBrush}}" />
+                                            </Border>
+                                            <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                                <TextBlock Text="{Binding Detail}" Style="{StaticResource Text.Label}" FontSize="12.5" TextWrapping="Wrap" Margin="0,2,0,0" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,12">
+                                <Button DockPanel.Dock="Right" Style="{StaticResource Button.Small}" Content="Ver histórico"
+                                        Command="{Binding NavigateCommand}" CommandParameter="History" />
+                                <TextBlock Text="Atividade recente" Style="{StaticResource Text.H2}" VerticalAlignment="Center" />
+                            </DockPanel>
+                            <TextBlock Text="Nenhuma atividade nesta sessão." Style="{StaticResource Text.Label}"
+                                       Visibility="{Binding Activity.Count, Converter={StaticResource CountToVis}, ConverterParameter=Zero}" />
+                            <ItemsControl ItemsSource="{Binding Activity}" MaxHeight="300">
+                                <ItemsControl.Template>
+                                    <ControlTemplate TargetType="ItemsControl">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <ItemsPresenter />
+                                        </ScrollViewer>
+                                    </ControlTemplate>
+                                </ItemsControl.Template>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="24" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding Time}" Style="{StaticResource Text.Label}" FontFamily="{StaticResource Font.Mono}" FontSize="12" />
+                                            <TextBlock Grid.Column="1" Style="{StaticResource Icon}" Text="{Binding Glyph}" FontSize="12"
+                                                       Foreground="{Binding Severity, Converter={StaticResource SeverityBrush}}" />
+                                            <TextBlock Grid.Column="2" Text="{Binding Text}" TextWrapping="Wrap" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel x:Name="SidePanel" Grid.Column="1" Margin="12,0,0,0">
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Computador associado" Style="{StaticResource Text.H2}" Margin="0,0,0,12" />
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Nome" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding Hostname}" Style="{StaticResource Text.Value}" FontWeight="SemiBold" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Sistema" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding WindowsVersion}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Última verificação" Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding LastScanText}" Style="{StaticResource Text.Value}" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock Text="Verificação automática" Style="{StaticResource FieldLabel}" />
+                                <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding AutoScan}"
+                                          ToolTip="Verifica novamente quando o Windows informa que um dispositivo foi conectado ou removido. Funciona apenas com o aplicativo aberto." />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Categorias de periféricos" Style="{StaticResource Text.H2}" Margin="0,0,0,10" />
+                            <ItemsControl ItemsSource="{Binding Categories}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,7">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{StaticResource Icon}" Text="{Binding Glyph}" Foreground="{StaticResource Brush.TextSecondary}" />
+                                            <StackPanel Grid.Column="1" Margin="12,0">
+                                                <TextBlock Text="{Binding Label}" />
+                                                <ProgressBar Style="{StaticResource Bar}" Value="{Binding Percent, Mode=OneWay}" Margin="0,6,0,0" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" Text="{Binding Count}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Qualidade da identificação" Style="{StaticResource Text.H2}" Margin="0,0,0,10" />
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding Overview.Unassigned}" FontWeight="SemiBold" />
+                                <TextBlock Text="Sem responsável" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding Overview.LowConfidence}" FontWeight="SemiBold" />
+                                <TextBlock Text="Baixa confiança de identificação" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding Overview.UnexpectedComputer}" FontWeight="SemiBold" />
+                                <TextBlock Text="Em computador inesperado" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            </DockPanel>
+                            <DockPanel Style="{StaticResource Field}">
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding Overview.AmbiguousFingerprint}" FontWeight="SemiBold" />
+                                <TextBlock Text="Unidades idênticas conectadas" Style="{StaticResource Text.Label}" FontSize="12.5" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

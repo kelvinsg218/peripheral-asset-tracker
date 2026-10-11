@@ -12,5 +12,8 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <AnalysisLevel>latest</AnalysisLevel>
     <Deterministic>true</Deterministic>
+    <!-- Product version: shown in the desktop app and used for the release file name. -->
+    <Version>1.0.0</Version>
+    <Product>Peripheral Asset Tracker</Product>
   </PropertyGroup>
 </Project>

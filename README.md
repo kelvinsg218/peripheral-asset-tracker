@@ -1,10 +1,70 @@
 # Peripheral Asset Tracker
 
-Ferramenta local (CLI) de **inventário e rastreabilidade de periféricos** — mouses, teclados e outros dispositivos HID — conectados a computadores Windows 10/11 de uma empresa.
+Aplicativo para Windows 10 e 11 que faz o **inventário local de periféricos** (mouses, teclados e outros dispositivos HID). Ele mostra quais estão conectados, quem é o responsável por cada um e em qual computador cada um deveria estar. Inclui também uma ferramenta de linha de comando (`pat`) para automação.
 
-> **Escopo:** inventário de HARDWARE e registro de movimentações administrativas. A aplicação **não** captura teclas, movimento do mouse, clipboard, telas, arquivos ou qualquer atividade pessoal. Veja [Privacidade](#privacidade).
+> **Escopo:** inventário de HARDWARE e registro de movimentações administrativas. O aplicativo **não** captura teclas, movimento do mouse, área de transferência, telas, arquivos ou qualquer atividade pessoal. Veja [Privacidade](#privacidade).
+
+![Painel do Peripheral Asset Tracker](docs/screenshots/painel.png)
+
+## Download
+
+**[Baixar Peripheral-Asset-Tracker-v1.0.0.exe](https://github.com/kelvinsg218/peripheral-asset-tracker/releases/download/v1.0.0/Peripheral-Asset-Tracker-v1.0.0.exe)** (Windows 10/11 de 64 bits, cerca de 60 MB). Todas as versões ficam em [Releases](https://github.com/kelvinsg218/peripheral-asset-tracker/releases).
+
+- Arquivo único e portátil: não tem instalador e não exige .NET, Python ou Node.js.
+- Não precisa de permissão de administrador.
+- O SHA-256 do executável é publicado na página da Release.
+
+> **Aviso do SmartScreen:** o executável não tem assinatura digital de código. Na primeira execução, o Windows pode exibir "O Windows protegeu o computador". Confira o SHA-256 e clique em **Mais informações → Executar assim mesmo**.
+
+## Como usar
+
+1. Dê dois cliques em `Peripheral-Asset-Tracker-v1.0.0.exe`. Na primeira vez, o aplicativo cria o banco local e verifica os periféricos conectados.
+2. **Verificar dispositivos**: lista o que o Windows detecta agora. Os dispositivos marcados como **Novo** podem ser cadastrados com nome, categoria, responsável e computador esperado.
+3. **Inventário de dispositivos**: pesquise por nome, fabricante, VID/PID, número de série ou responsável e filtre por categoria e status. Selecione um item para ver a identificação técnica, a atribuição e o histórico. **Atribuir…** e **Transferir…** registram mudanças; **Exportar relatório** gera um CSV para o Excel.
+4. **Painel**: totais, conectados, desconectados, novos, categorias e alertas.
+5. Para encerrar, feche a janela. O aplicativo não fica em segundo plano.
+
+O estado de presença é sempre relativo ao computador em uso:
+
+| Estado | Significado |
+|---|---|
+| Conectado | detectado na última verificação deste computador |
+| Desconectado | associado a este computador, mas ausente na última verificação |
+| Desconhecido | associado a outro computador, ou ainda não verificado: este computador não consegue confirmar |
+
+Com a **Verificação automática** ligada, o aplicativo verifica de novo quando o Windows avisa que um dispositivo foi conectado ou removido, mas somente enquanto a janela está aberta.
+
+| Inventário de dispositivos | Verificar dispositivos |
+|---|---|
+| ![Inventário de dispositivos](docs/screenshots/inventario.png) | ![Verificar dispositivos](docs/screenshots/verificacao.png) |
+
+> As capturas foram feitas no modo de demonstração, com dados fictícios (`--fixture` e `--host`).
+
+### Onde ficam os dados
+
+Os dados ficam em `%LOCALAPPDATA%\PeripheralAssetTracker\`: o banco SQLite em `data\peripheral-assets.db` e os registros técnicos em `logs\`. Nada é enviado pela internet. Para usar outra pasta (por exemplo, o mesmo banco em vários computadores, a partir de um pendrive), use a variável de ambiente `PAT_DATA_DIR` ou a opção `--data-dir <pasta>`.
+
+## Gerar o executável
+
+Pré-requisito: .NET SDK 9.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\build.ps1
+```
+
+O script executa os testes e publica o aplicativo como um único `.exe` self-contained (`win-x64`, com compressão). O resultado fica em `artifacts\release\Peripheral-Asset-Tracker-v<versão>.exe`, junto com o arquivo `.sha256`. A versão vem de `<Version>` em `Directory.Build.props`, e a pasta `artifacts/` é ignorada pelo Git.
+
+Durante o desenvolvimento:
+
+```powershell
+dotnet run --project src/PeripheralAssetTracker.Desktop
+# modo de demonstração, sem hardware real e sem tocar nos seus dados
+dotnet run --project src/PeripheralAssetTracker.Desktop -- --data-dir .\temp\demo --host ESCRITORIO-01 --fixture tests\PeripheralAssetTracker.Tests\Fixtures\synthetic-office-desk.json
+```
 
 ---
+
+# Documentação técnica
 
 ## Sumário
 
@@ -20,7 +80,7 @@ Ferramenta local (CLI) de **inventário e rastreabilidade de periféricos** — 
 - [Modelo de domínio](#modelo-de-domínio)
 - [Expected vs Observed](#expected-vs-observed)
 - [Status do dispositivo](#status-do-dispositivo)
-- [Instalação](#instalação)
+- [Compilação a partir do código](#compilação-a-partir-do-código)
 - [Execução e CLI](#execução-e-cli)
 - [SQLite e EF Core Migrations](#sqlite-e-ef-core-migrations)
 - [Cadastro, Assignment e Transfer](#cadastro-assignment-e-transfer)
@@ -66,17 +126,19 @@ Mouses e teclados **não** possuem um "Hash ID" físico universal. O Peripheral 
 | Expected vs Observed | Alerta `UNEXPECTED_COMPUTER` sem alterar a Assignment |
 | Transfer | Transação com rollback em qualquer falha |
 | Observations | Coalescência anti-spam sem perda de mudanças de local |
+| Aplicativo desktop | WPF, tema escuro, pt-BR: painel, verificação, inventário com pesquisa, filtros, detalhes e histórico, atribuição/transferência, responsáveis, computadores, exportação CSV, verificação automática ao conectar/desconectar |
+| Distribuição | `.exe` único self-contained (win-x64), sem instalação e sem privilégios de administrador |
 | CLI | Menu interativo (PT-BR) + comandos diretos para automação |
 | Pesquisa e filtros | Case/acento-insensitive; filtros por tipo, responsável, computador, sem responsável, LOW, unexpected |
 | Histórico | Linha do tempo: cadastro, atribuições, transferências, observações (com alerta histórico) |
 | CSV | `reports/inventory_YYYY-MM-DD_HHMMSS.csv`, UTF-8 com BOM, delimitador compatível com Excel |
 | Logs | Arquivo diário em `logs/`, sem stack trace no console |
 | Simulação | `--fixture` (snapshot PnP) e `--host` (hostname simulado) para validar sem hardware |
-| Testes | 166 testes automatizados (xUnit), sem dependência de hardware real |
+| Testes | 189 testes automatizados (xUnit), sem dependência de hardware real |
 
 ### 🗺️ PLANEJADO (não existe nesta versão)
 
-GUI desktop, dashboard, API central, PostgreSQL, Active Directory, agente distribuído, inventário de várias máquinas, alertas, relatórios administrativos e sincronização centralizada. Veja [Roadmap](#roadmap).
+API central, PostgreSQL, Active Directory, agente distribuído, inventário consolidado de várias máquinas, alertas fora do aplicativo (e-mail/notificações), relatórios administrativos e sincronização centralizada. Veja [Roadmap](#roadmap).
 
 ---
 
@@ -95,10 +157,10 @@ DeviceFingerprintService  ──►  normaliza → escolhe os melhores identific
 ScanService  ──►  compara com o inventário (SQLite) → registra Observation → avalia status
         │
         ▼
-CLI  ──►  mostra, cadastra, atribui, transfere, pesquisa, exporta
+Desktop / CLI  ──►  mostram, cadastram, atribuem, transferem, pesquisam, exportam
 ```
 
-Na inicialização: (1) cria `data/`, `logs/`, `reports/`; (2) abre o SQLite; (3) aplica migrations pendentes; (4) obtém o hostname; (5) obtém a versão do Windows; (6) cadastra/atualiza o `Computer` atual; (7) abre o menu ou executa o comando.
+Na inicialização (o aplicativo desktop usa `%LOCALAPPDATA%\PeripheralAssetTracker` como raiz; a CLI usa a pasta atual): (1) cria `data/`, `logs/`, `reports/`; (2) abre o SQLite; (3) aplica migrations pendentes; (4) obtém o hostname; (5) obtém a versão do Windows; (6) cadastra/atualiza o `Computer` atual; (7) abre o menu ou executa o comando.
 
 ---
 
@@ -111,12 +173,15 @@ PeripheralAssetTracker.sln
 │   ├── PeripheralAssetTracker.Application/     casos de uso, portas (interfaces), normalização, fingerprint, CSV, DTOs
 │   ├── PeripheralAssetTracker.Infrastructure/  SQLite/EF Core, migrations, CfgMgr32 (PnP), agrupamento HID, registro do
 │   │                                           Windows, arquivos de relatório, logger em arquivo
-│   └── PeripheralAssetTracker.Cli/             menu, comandos, entrada/saída e formatação (executável `pat`)
+│   ├── PeripheralAssetTracker.Cli/             menu, comandos, entrada/saída e formatação (executável `pat`)
+│   └── PeripheralAssetTracker.Desktop/         aplicativo WPF (pt-BR): telas, view models, tema escuro, ícone
+│                                               (executável `PeripheralAssetTracker.exe`)
 └── tests/
-    └── PeripheralAssetTracker.Tests/           domínio, fingerprint, agrupamento HID, persistência, casos de uso, CSV, CLI
+    └── PeripheralAssetTracker.Tests/           domínio, fingerprint, agrupamento HID, persistência, casos de uso, CSV, CLI,
+                                                apresentação do desktop
 ```
 
-Dependências: `Cli → Infrastructure → Application → Domain`. A CLI não contém regra de negócio: uma GUI ou API futura pode reutilizar os serviços da camada Application (`ScanService`, `DeviceRegistrationService`, `AssignmentService`, `InventoryQueryService`, `HistoryService`, `InventoryExportService`...).
+Dependências: `Cli / Desktop → Infrastructure → Application → Domain`. Nenhum dos dois executáveis contém regra de negócio: ambos usam os mesmos serviços da camada Application (`ScanService`, `DeviceRegistrationService`, `AssignmentService`, `InventoryQueryService`, `HistoryService`, `InventoryExportService`...).
 
 Decisão pragmática: a camada Application depende da API **provider-agnostic** do EF Core (`DbSet`, transações) através de `IAssetTrackerDbContext`, em vez de uma camada de repositórios. Detalhes do SQLite ficam em Infrastructure.
 
@@ -130,6 +195,7 @@ Decisão pragmática: a camada Application depende da API **provider-agnostic** 
 | Banco | SQLite (Microsoft.Data.Sqlite) |
 | ORM | Entity Framework Core 9.0.20 + Migrations (`dotnet-ef` como ferramenta local) |
 | DI/Logging | Microsoft.Extensions.DependencyInjection / Logging 9.0.20 |
+| Interface desktop | WPF (`net9.0-windows`), sem bibliotecas de terceiros |
 | Testes | xUnit 2.9.3 |
 
 > **Sobre a versão do .NET:** a especificação pedia .NET 8 LTS "ou LTS compatível disponível". A máquina de desenvolvimento tinha **apenas** o SDK/runtime do .NET 9 (sem .NET 8 nem .NET 10). O target está centralizado em `Directory.Build.props` e as versões dos pacotes em `Directory.Packages.props`. Para migrar para o **.NET 10 LTS** (recomendado, pois o suporte do .NET 9 termina em novembro de 2026), altere `TargetFramework` para `net10.0` e os pacotes EF Core/Extensions para `10.0.x`.
@@ -285,7 +351,7 @@ Exemplos: `UNASSIGNED + LOW_CONFIDENCE`; `UNEXPECTED_COMPUTER + LOW_CONFIDENCE +
 
 ---
 
-## Instalação
+## Compilação a partir do código
 
 Pré-requisitos: Windows 10/11 e .NET SDK 9 (ou superior, com retarget; veja [Tecnologias](#tecnologias)).
 
@@ -315,18 +381,18 @@ Menu:
 ========================================================
 PERIPHERAL ASSET TRACKER
 ========================================================
-Machine: TI-04
+Computador: TI-04
 
-[1] Scan connected devices   (escanear dispositivos conectados)
-[2] Registered devices       (dispositivos cadastrados)
-[3] Search                   (pesquisar)
-[4] Assign device            (atribuir dispositivo)
-[5] Transfer device          (transferir dispositivo)
-[6] Computers                (computadores)
-[7] Responsible people       (responsáveis)
-[8] Movement history         (histórico)
-[9] Export inventory         (exportar CSV)
-[0] Exit                     (sair)
+[1] Verificar dispositivos conectados
+[2] Dispositivos cadastrados
+[3] Pesquisar
+[4] Atribuir dispositivo
+[5] Transferir dispositivo
+[6] Computadores
+[7] Responsáveis
+[8] Histórico de movimentações
+[9] Exportar inventário (CSV)
+[0] Sair
 ```
 
 Comandos diretos (automação):
@@ -362,7 +428,7 @@ $fx = "tests\PeripheralAssetTracker.Tests\Fixtures\synthetic-office-desk.json"
 pat --data-dir .\temp\demo --fixture $fx --host TI-04 people add Kelvin --department TI
 pat --data-dir .\temp\demo --fixture $fx --host TI-04 register 3 --person 1 --expected-current
 pat --data-dir .\temp\demo --fixture $fx --host RECEPCAO-01 scan     # → UNEXPECTED_COMPUTER
-pat --data-dir .\temp\demo --host TI-04 transfer 1 --computer RECEPCAO-01 --reason "Equipment relocation" --yes
+pat --data-dir .\temp\demo --host TI-04 transfer 1 --computer RECEPCAO-01 --reason "Mudança de setor" --yes
 pat --data-dir .\temp\demo --host TI-04 history 1
 ```
 
@@ -468,6 +534,8 @@ Colunas: `Fingerprint, Confidence, Type, Device, Manufacturer, VID, PID, Serial,
 - Status múltiplos são unidos com `|` (ex.: `UNASSIGNED|LOW_CONFIDENCE`).
 - Valores iniciados por `= + - @` recebem `'` para neutralizar injeção de fórmulas.
 
+No aplicativo desktop, **Exportar relatório** salva os dispositivos exibidos (respeitando pesquisa e filtros) no local escolhido, com as mesmas regras e com cabeçalhos e valores em português: `Nome, Categoria, Estado, Fabricante, VID, PID, Número de série, Endereço Bluetooth, Conexão, Responsável, Departamento, Computador esperado, Último computador, Primeira detecção, Última detecção, Confiança, Alertas, Fingerprint`.
+
 ---
 
 ## Logs e tratamento de erros
@@ -484,7 +552,7 @@ Colunas: `Fingerprint, Confidence, Type, Device, Manufacturer, VID, PID, Serial,
 dotnet test
 ```
 
-**166 testes** (xUnit), sem hardware real e sem banco real:
+**189 testes** (xUnit), sem hardware real e sem banco real:
 
 | Grupo | Cobertura |
 |---|---|
@@ -496,6 +564,7 @@ dotnet test
 | Casos de uso | computador atual, scan, cadastro, observações coalescidas, unexpected computer, ambiguidade, integrados, assign, transfer, histórico, pesquisa, filtros, contagens |
 | CSV | headers, dados, UTF-8 BOM, acentos, campos opcionais nulos, status múltiplos, aspas, delimitador, nome do arquivo |
 | Plataforma/CLI | detecção de Windows 11, parser de argumentos, delimitador |
+| Desktop | presença (conectado/desconectado/desconhecido), indicadores do painel, conexões/desconexões entre verificações, textos pt-BR, filtros, CSV em português, alertas |
 
 Fixtures em `tests/PeripheralAssetTracker.Tests/Fixtures/`:
 
@@ -528,7 +597,10 @@ A descoberta lê apenas **propriedades de configuração PnP** (identificadores,
 - **Nomes** sem string de produto USB vêm localizados pelo Windows (ex.: "Mouse compatível com HID").
 - **Pesquisa/filtros** são feitos em memória, o que é adequado para inventário local (milhares de itens), não para bases centrais grandes.
 - **Aplicação local**: cada computador tem seu próprio banco; não há consolidação entre máquinas nesta versão. Para Expected vs Observed entre computadores reais, o mesmo arquivo de banco precisa ser usado (ex.: pendrive/pasta do técnico com `--data-dir`) ou é preciso aguardar a sincronização planejada.
-- **.NET 9**: suporte até novembro de 2026; recomenda-se retarget para .NET 10 LTS.
+- **.NET 9**: suporte até novembro de 2026; recomenda-se retarget para .NET 10 LTS. O runtime vai embutido no `.exe`, então atualizações de segurança do .NET exigem publicar uma nova versão.
+- **Executável sem assinatura digital**: o SmartScreen pode alertar na primeira execução (veja [Download](#download)).
+- **Windows 10**: a interface foi validada no Windows 11. O aplicativo usa apenas APIs disponíveis no Windows 10, mas não foi testado nele.
+- **Desktop**: a atividade de conexões/desconexões da sessão não é gravada no banco; o histórico persistente vem das observações de cada verificação.
 
 ---
 
@@ -536,13 +608,11 @@ A descoberta lê apenas **propriedades de configuração PnP** (identificadores,
 
 Possibilidades futuras (**nenhuma implementada**):
 
-- GUI desktop (reutilizando a camada Application)
-- Dashboard
 - API central
 - PostgreSQL
 - Integração com Active Directory
 - Agente distribuído para inventário de várias máquinas
-- Alertas (ex.: dispositivo em computador inesperado)
+- Alertas fora do aplicativo (e-mail/notificações)
 - Relatórios administrativos
 - Sincronização centralizada
 - Leitura de serial via `HidD_GetSerialNumberString` para aumentar a confiança

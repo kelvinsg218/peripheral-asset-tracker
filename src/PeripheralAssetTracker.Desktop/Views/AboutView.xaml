@@ -1,0 +1,81 @@
+<UserControl x:Class="PeripheralAssetTracker.Desktop.Views.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <Style x:Key="Bullet" TargetType="TextBlock" BasedOn="{StaticResource Text.Value}">
+            <Setter Property="Margin" Value="0,5,0,0" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.TextSecondary}" />
+        </Style>
+        <Style x:Key="Path" TargetType="TextBox">
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource Brush.Text}" />
+            <Setter Property="FontFamily" Value="{StaticResource Font.Mono}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel MaxWidth="900" HorizontalAlignment="Left">
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="/Assets/app.ico" Width="48" Height="48" VerticalAlignment="Top" RenderOptions.BitmapScalingMode="HighQuality" />
+                    <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                        <TextBlock Text="Peripheral Asset Tracker" Style="{StaticResource Text.H2}" FontSize="17" />
+                        <TextBlock Text="{Binding VersionText}" Style="{StaticResource Text.Label}" Margin="0,2,0,0" />
+                        <TextBlock Style="{StaticResource Text.Subtitle}" Margin="0,10,0,0"
+                                   Text="Inventário local de periféricos (mouses, teclados e outros dispositivos de entrada) para Windows 10 e 11. Identifica cada unidade conectada, registra o responsável e o computador esperado, e mostra quando um dispositivo aparece em um computador diferente." />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                <StackPanel>
+                    <TextBlock Text="Como funciona" Style="{StaticResource Text.H2}" />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• A verificação consulta a lista de dispositivos Plug and Play do Windows (CfgMgr32), somente para leitura. Nenhum driver ou configuração é alterado." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• As várias interfaces HID de um mesmo aparelho são agrupadas em um único dispositivo físico." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• O fingerprint (SHA-256) combina identificadores fornecidos pelo Windows, como VID, PID, número de série e endereço Bluetooth, para reconhecer o dispositivo em verificações futuras." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• A confiança é Alta quando há um identificador individual (número de série ou endereço Bluetooth), Média com uma combinação forte e Baixa quando só há dados comuns a todas as unidades do mesmo modelo." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• A verificação automática só acontece com o aplicativo aberto, quando o Windows avisa que um dispositivo foi conectado ou removido." />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                <StackPanel>
+                    <TextBlock Text="Privacidade e dados" Style="{StaticResource Text.H2}" />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Tudo fica neste computador, na pasta do seu usuário. O aplicativo não envia dados pela internet." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Não instala serviços, não inicia com o Windows e não continua em execução depois de fechado." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Não precisa de permissão de administrador." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Os registros técnicos (logs) contêm apenas eventos, contagens e o nome do computador; não incluem números de série, endereços Bluetooth nem fingerprints." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• O relatório CSV só é criado quando você clica em &quot;Exportar relatório&quot; e escolhe onde salvá-lo." />
+
+                    <TextBlock Text="Pasta de dados" Style="{StaticResource Text.Label}" Margin="0,16,0,2" />
+                    <TextBox Style="{StaticResource Path}" Text="{Binding DataDirectory, Mode=OneWay}" />
+                    <TextBlock Text="Banco de dados (SQLite)" Style="{StaticResource Text.Label}" Margin="0,10,0,2" />
+                    <TextBox Style="{StaticResource Path}" Text="{Binding DatabasePath, Mode=OneWay}" />
+                    <TextBlock Text="Registros técnicos" Style="{StaticResource Text.Label}" Margin="0,10,0,2" />
+                    <TextBox Style="{StaticResource Path}" Text="{Binding LogsDirectory, Mode=OneWay}" />
+                    <Button Content="Abrir pasta de dados" Command="{Binding OpenDataFolderCommand}" HorizontalAlignment="Left" Margin="0,14,0,0" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                <StackPanel>
+                    <TextBlock Text="Limitações" Style="{StaticResource Text.H2}" />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• O fingerprint reconhece um dispositivo já visto; ele não indica a localização física do dispositivo." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Unidades idênticas do mesmo modelo sem número de série não podem ser diferenciadas: o Windows não fornece dados para isso (confiança Baixa)." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Cada computador só verifica os próprios periféricos. Um dispositivo associado a outro computador aparece com estado desconhecido." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Receptores sem fio (dongles USB) são identificados como o receptor, não como o periférico pareado a ele." />
+                    <TextBlock Style="{StaticResource Bullet}" Text="• Teclados PS/2 externos são tratados como integrados: ative &quot;Mostrar integrados&quot; na verificação para vê-los." />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

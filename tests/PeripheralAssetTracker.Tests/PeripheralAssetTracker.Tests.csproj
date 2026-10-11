@@ -4,6 +4,9 @@
     <RootNamespace>PeripheralAssetTracker.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <!-- The desktop app (WPF) is Windows-only, like the CfgMgr32 discovery it builds on. -->
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,10 +20,12 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Using Include="System.IO" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PeripheralAssetTracker.Cli\PeripheralAssetTracker.Cli.csproj" />
+    <ProjectReference Include="..\..\src\PeripheralAssetTracker.Desktop\PeripheralAssetTracker.Desktop.csproj" />
   </ItemGroup>
 
   <ItemGroup>

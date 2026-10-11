@@ -169,19 +169,19 @@ internal sealed class CommandRunner(CliSession session, CliArguments args)
         var newComputer = args.Has("computer") ? await ComputerOptionAsync() : device.ExpectedComputerId;
         var reason = args.Get("reason") ?? throw new AssetTrackerException("Informe o motivo com --reason \"...\".");
 
-        Ui.Field("Device", $"{device.DeviceName} (#{device.Id})");
-        Ui.Field("Current responsible", device.ResponsiblePersonName ?? "Nenhum");
-        Ui.Field("Current computer", device.ExpectedComputerHostname ?? "Nenhum");
+        Ui.Field("Dispositivo", $"{device.DeviceName} (#{device.Id})");
+        Ui.Field("Responsável atual", device.ResponsiblePersonName ?? "Nenhum");
+        Ui.Field("Computador atual", device.ExpectedComputerHostname ?? "Nenhum");
         var newPersonName = newPerson is null
             ? "Nenhum"
             : (await session.Use(sp => sp.GetRequiredService<PeopleService>().FindAsync(newPerson.Value)))?.Name;
         var newHostname = newComputer is null
             ? "Nenhum"
             : (await session.Use(sp => sp.GetRequiredService<ComputerService>().FindAsync(newComputer.Value.ToString())))?.Hostname;
-        Ui.Field("New responsible", newPersonName);
-        Ui.Field("New computer", newHostname);
-        Ui.Field("Reason", reason);
-        if (!args.Has("yes") && !Ui.Confirm("Confirm?"))
+        Ui.Field("Novo responsável", newPersonName);
+        Ui.Field("Novo computador", newHostname);
+        Ui.Field("Motivo", reason);
+        if (!args.Has("yes") && !Ui.Confirm("Confirmar?"))
         {
             Ui.Info("Transferência cancelada.");
             return 1;

@@ -18,18 +18,18 @@ internal sealed class InteractiveShell(CliSession session, ILogger logger)
         while (true)
         {
             Ui.Title("PERIPHERAL ASSET TRACKER");
-            Ui.Line($"Machine: {session.CurrentHostname}");
+            Ui.Line($"Computador: {session.CurrentHostname}");
             Ui.Line();
-            Ui.Line("[1] Scan connected devices   (escanear dispositivos conectados)");
-            Ui.Line("[2] Registered devices       (dispositivos cadastrados)");
-            Ui.Line("[3] Search                   (pesquisar)");
-            Ui.Line("[4] Assign device            (atribuir dispositivo)");
-            Ui.Line("[5] Transfer device          (transferir dispositivo)");
-            Ui.Line("[6] Computers                (computadores)");
-            Ui.Line("[7] Responsible people       (responsáveis)");
-            Ui.Line("[8] Movement history         (histórico)");
-            Ui.Line("[9] Export inventory         (exportar CSV)");
-            Ui.Line("[0] Exit                     (sair)");
+            Ui.Line("[1] Verificar dispositivos conectados");
+            Ui.Line("[2] Dispositivos cadastrados");
+            Ui.Line("[3] Pesquisar");
+            Ui.Line("[4] Atribuir dispositivo");
+            Ui.Line("[5] Transferir dispositivo");
+            Ui.Line("[6] Computadores");
+            Ui.Line("[7] Responsáveis");
+            Ui.Line("[8] Histórico de movimentações");
+            Ui.Line("[9] Exportar inventário (CSV)");
+            Ui.Line("[0] Sair");
 
             var choice = Ui.Ask(">");
             if (choice is null or "0")
@@ -87,7 +87,7 @@ internal sealed class InteractiveShell(CliSession session, ILogger logger)
         {
             var report = await _flows.ScanAsync(includeBuiltIn, details);
             Ui.Line();
-            Ui.Line("[nº] cadastrar dispositivo NOT REGISTERED  [A] incluir/ocultar integrados  [D] detalhes técnicos  [Enter] voltar");
+            Ui.Line("[nº] cadastrar dispositivo não cadastrado  [A] incluir/ocultar integrados  [D] detalhes técnicos  [Enter] voltar");
             var answer = Ui.Ask(">");
             if (string.IsNullOrEmpty(answer))
             {
@@ -119,8 +119,8 @@ internal sealed class InteractiveShell(CliSession session, ILogger logger)
     private async Task DevicesMenuAsync()
     {
         Ui.Section("Filtros");
-        Ui.Line("[1] Todos  [2] Mouse  [3] Keyboard  [4] Other  [5] Por responsável  [6] Por computador");
-        Ui.Line("[7] Sem responsável  [8] Fingerprint LOW  [9] Unexpected computer");
+        Ui.Line("[1] Todos  [2] Mouse  [3] Teclado  [4] Outro  [5] Por responsável  [6] Por computador");
+        Ui.Line("[7] Sem responsável  [8] Fingerprint LOW  [9] Computador inesperado");
         var choice = Ui.Ask("Filtro (Enter = todos):");
         if (choice is null)
         {

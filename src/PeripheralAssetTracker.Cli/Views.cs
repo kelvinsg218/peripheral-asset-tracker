@@ -39,7 +39,7 @@ internal static class Views
         ui.Field("Fabricante", d.Manufacturer);
         ui.Field("VID", d.VendorId);
         ui.Field("PID", d.ProductId);
-        ui.Field("Serial", d.SerialNumber);
+        ui.Field("Número de série", d.SerialNumber);
         if (d.BluetoothAddress is not null)
         {
             ui.Field("Endereço Bluetooth", d.BluetoothAddress);
@@ -51,20 +51,20 @@ internal static class Views
 
         if (item.Registered is { } r)
         {
-            ui.Field("Registro", $"REGISTERED (#{r.Id})");
+            ui.Field("Registro", $"Cadastrado (#{r.Id})");
             ui.Field("Responsável", r.ResponsiblePersonName ?? "UNASSIGNED");
             ui.Field("Computador esperado", r.ExpectedComputerHostname ?? "Não definido");
             ui.Field("Computador observado", r.LastSeenComputerHostname);
         }
         else
         {
-            ui.Field("Registro", "NOT REGISTERED");
+            ui.Field("Registro", "Não cadastrado");
         }
 
         ui.Field("Status", Status(item.Conditions));
         if (item.Conditions.HasFlag(DeviceConditions.UnexpectedComputer))
         {
-            ui.Warning("DEVICE FOUND ON UNEXPECTED COMPUTER (a atribuição NÃO foi alterada).");
+            ui.Warning("DISPOSITIVO ENCONTRADO EM COMPUTADOR INESPERADO (a atribuição NÃO foi alterada).");
         }
 
         if (item.SharedFingerprintCount > 1)
@@ -80,7 +80,7 @@ internal static class Views
 
         if (details)
         {
-            ui.Field("PNP Device ID", d.PnpDeviceId);
+            ui.Field("ID do dispositivo PnP", d.PnpDeviceId);
             ui.Field("Funções HID", string.Join(", ", d.Functions));
             ui.Field("Container ID", d.ContainerId);
             ui.Line($"Entradas PnP/HID agrupadas ({d.InterfaceInstanceIds.Count}):");
@@ -128,14 +128,14 @@ internal static class Views
         ui.Field("Fabricante", d.Manufacturer);
         ui.Field("VID", d.VendorId);
         ui.Field("PID", d.ProductId);
-        ui.Field("Serial", d.SerialNumber);
+        ui.Field("Número de série", d.SerialNumber);
         if (d.BluetoothAddress is not null)
         {
             ui.Field("Endereço Bluetooth", d.BluetoothAddress);
         }
 
         ui.Field("Conexão", BusLabel(d.BusType));
-        ui.Field("PNP Device ID", d.PnpDeviceId);
+        ui.Field("ID do dispositivo PnP", d.PnpDeviceId);
         ui.Field("Fingerprint", d.Fingerprint);
         ui.Field("Confiança", $"{Confidence(d.Confidence)} — {d.FingerprintBasis}");
         ui.Field("Responsável", d.ResponsiblePersonName is null
@@ -150,7 +150,7 @@ internal static class Views
 
     public static void History(ConsoleUi ui, DeviceHistory history)
     {
-        ui.Section($"DEVICE: {history.Device.DeviceName} (#{history.Device.Id})");
+        ui.Section($"DISPOSITIVO: {history.Device.DeviceName} (#{history.Device.Id})");
         foreach (var e in history.Entries)
         {
             ui.Line();
@@ -158,27 +158,27 @@ internal static class Views
             switch (e.Kind)
             {
                 case HistoryEntryKind.Registered:
-                    ui.Line("  Registered");
+                    ui.Line("  Cadastrado");
                     break;
                 case HistoryEntryKind.Assigned:
-                    ui.Line("  Assigned");
+                    ui.Line("  Atribuído");
                     ui.Line($"  {ConsoleUi.OrUnavailable(e.ToPerson)} / {ConsoleUi.OrUnavailable(e.ToComputer)}");
                     ui.Line($"  Motivo: {e.Reason}");
                     break;
                 case HistoryEntryKind.Transferred:
-                    ui.Line("  Transferred");
+                    ui.Line("  Transferido");
                     ui.Line($"  {ConsoleUi.OrUnavailable(e.FromPerson)} / {ConsoleUi.OrUnavailable(e.FromComputer)}");
                     ui.Line("  →");
                     ui.Line($"  {ConsoleUi.OrUnavailable(e.ToPerson)} / {ConsoleUi.OrUnavailable(e.ToComputer)}");
                     ui.Line($"  Motivo: {e.Reason}");
                     break;
                 case HistoryEntryKind.Observed:
-                    ui.Line("  Observed");
+                    ui.Line("  Detectado");
                     ui.Line($"  {e.ToComputer}" +
                             (e.ScanCount > 1 ? $" (confirmado em {e.ScanCount} scans até {ConsoleUi.FormatDate(e.ObservedUntil)})" : string.Empty));
                     if (e.UnexpectedComputer)
                     {
-                        ui.Line("  WARNING: unexpected computer");
+                        ui.Line("  ALERTA: computador inesperado");
                     }
 
                     break;
